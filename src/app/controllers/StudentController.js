@@ -1,16 +1,29 @@
 import * as Yup from 'yup';
 import Student from '../models/Student';
+import File from '../models/File';
 
 class StudentController {
   async index(req, res) {
-    const students = await Student.findAll();
+    const students = await Student.findAll({
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'age',
+        'weight',
+        'height',
+        'avatar_id',
+      ],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
+    });
 
-    return res.json(
-      students.map(student => {
-        const { id, name, email, age, weight, height } = student;
-        return { id, name, email, age, weight, height };
-      })
-    );
+    return res.json(students);
   }
 
   async show(req, res) {

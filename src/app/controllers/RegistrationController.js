@@ -1,8 +1,12 @@
 import * as Yup from 'yup';
-import { startOfDay, addMonths } from 'date-fns';
+import { startOfDay, addMonths, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import Registration from '../models/Registration';
 import Student from '../models/Student';
 import Plan from '../models/Plan';
+
+import RegistrationMail from '../jobs/RegistrationMail';
+import Queue from '../../lib/Queue';
 
 class RegistrationController {
   async index(req, res) {
@@ -51,6 +55,22 @@ class RegistrationController {
       start_date,
       end_date,
       price,
+    });
+
+    const formatedPrice = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(price);
+
+    /**
+     * Send email to notify the student
+     */
+    await Queue.add(RegistrationMail.key, {
+      student,
+      plan,
+      start_date,
+      end_date,
+      formatedPrice,
     });
 
     return res.json({
