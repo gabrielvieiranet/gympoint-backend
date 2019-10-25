@@ -1,5 +1,6 @@
 .vscode
 yarn.lock
+tmp/uploads/*
 
 # Logs
 logs
