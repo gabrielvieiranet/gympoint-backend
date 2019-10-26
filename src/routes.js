@@ -8,6 +8,7 @@ import StudentController from './app/controllers/StudentController';
 import FileController from './app/controllers/FileController';
 import PlanController from './app/controllers/PlanController';
 import RegistrationController from './app/controllers/RegistrationController';
+import CheckinController from './app/controllers/CheckinController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -16,6 +17,9 @@ const upload = multer(multerConfig);
 
 routes.post('/sessions', SessionController.store);
 routes.post('/users', UserController.store);
+
+routes.get('/students/:id/checkins', CheckinController.index);
+routes.post('/students/:id/checkins', CheckinController.store);
 
 routes.use(authMiddleware); // token validation
 
