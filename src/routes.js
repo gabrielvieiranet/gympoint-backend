@@ -33,6 +33,7 @@ routes.get('/students', StudentController.index);
 routes.get('/students/:id', StudentController.show);
 routes.post('/students', StudentController.store);
 routes.put('/students', StudentController.update);
+routes.delete('/students/:id', StudentController.delete);
 
 routes.get('/students/:id/help_orders', HelpOrderController.index);
 routes.get('/help_orders', HelpOrderController.index);
